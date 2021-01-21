@@ -1,14 +1,14 @@
 from flask import Flask, jsonify
 
 app = Flask(__name__)
-app.config["DEBUG"] = True
+app.config.from_pyfile('config.py')
+
 
 
 
 @app.route('/', methods=['GET', 'POST'])
 def welcome():
     return "Hello World!"
-
 
 
 
