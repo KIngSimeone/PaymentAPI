@@ -44,7 +44,6 @@ payment_fields = {
 }
 
 
-
 #   check if required fields in request body of Payment method
 paymentFields = reqparse.RequestParser()
 paymentFields.add_argument("CreditCardNumber", type=str, help= "CreditCardNumber", required=True)
@@ -52,7 +51,6 @@ paymentFields.add_argument("CardHolder", type=str, help= "CardHolder is required
 paymentFields.add_argument("ExpirationDate", type=str, help= "ExpirationDate is required", required=True)
 paymentFields.add_argument("SecurityCode", type=str, help= "SecurityCode is required")
 paymentFields.add_argument("Amount", type=float, help= "Amount is required", required=True)
-
 
 
 class PaymentMethod(Resource):
