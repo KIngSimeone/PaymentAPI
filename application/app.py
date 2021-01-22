@@ -1,5 +1,5 @@
 from flask import Flask, request
-from flask_restful import Api, Resource, reqparse, fields, marshal_with
+from flask_restful import Api, Resource, reqparse, fields, marshal_with, abort
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 
@@ -30,6 +30,7 @@ class TransactionRecord(db.Model):
         ccn = str(self.CardHolder + "'s Transaction")
         return ccn
 
+db.create_all()
 
 # create serialization for fields
 payment_fields = {
@@ -65,13 +66,13 @@ class PaymentMethod(Resource):
         exdate = datetime.datetime.strptime(args['ExpirationDate'], '%Y-%m-%d')
 
         # check if exdate is in the past by comparing with present date
-        present = datetime.now
+        present = datetime.datetime.now()
         if exdate < present:
             abort(400, message="Your Date is in the past")
         
         # create transaction record
         createdTransactionRecord = TransactionRecord(creditCardNumber=args['CreditCardNumber'], 
-                                                    cardHolder=args['CardHolder'], expiryDate=date_time_obj,
+                                                    cardHolder=args['CardHolder'], expiryDate=exdate,
                                                     securityCode=args['SecurityCode'], amount=args['Amount'])
         db.session.add(createdTransactionRecord)
         db.session.commit()
