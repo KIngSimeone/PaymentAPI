@@ -1,7 +1,7 @@
 from flask import Flask, request
-from flask_restful import Api, Resource, reqparse
+from flask_restful import Api, Resource, reqparse, fields
 from flask_sqlalchemy import SQLAlchemy
-import json
+
 
 
 # Initialize flask app
@@ -16,6 +16,7 @@ api = Api(app)
 # Set db as app datatbase
 db = SQLAlchemy(app)
 
+
 # Transaction record model
 class TransactionRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -23,15 +24,23 @@ class TransactionRecord(db.Model):
     cardHolder =  db.Column(db.String(564),nullable=False)
     expiryDate = db.Column(db.Date,nullable=False)
     securityCode = db.Column(db.String(20),nullable=False)
-    amount = db.Column(db.Integer, nullable=False)
+    amount = db.Column(db.Float, nullable=False)
     createdAt = db.Column(db.Date,nullable=False)
 
     def __repr__(self):
         ccn = str(self.CardHolder + "'s Transaction")
         return ccn
 
+db.create_all()
 
+"""
+# create serialization for fields
+payment_fields = {
+    'id': fields.Integer,
+    'name': fields.String,
 
+}
+"""
 
 
 #   check if required fields in request body of Payment method
