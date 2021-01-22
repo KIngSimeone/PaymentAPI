@@ -1,21 +1,9 @@
 from flask import Flask, jsonify
-from flask_sqlalchemy import SQLAlchemy
-import config
-from flask_migrate import Migrate
-
+from flask_restful import Api
 
 app = Flask(__name__)
-app.config.from_pyfile('config.py')
-
-
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-
-@app.route('/', methods=['GET', 'POST'])
-def welcome():
-    return "Hello World!"
+api = Api(app)
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', debug=True, port=5000)
