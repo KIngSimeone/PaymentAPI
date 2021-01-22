@@ -97,6 +97,7 @@ class PaymentMethod(Resource):
         db.session.commit()
         return createdTransactionRecord, 200
 
+# Add PaymentGateway as api resource
 api.add_resource(PaymentMethod,"/payment")
 
 
