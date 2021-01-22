@@ -25,6 +25,7 @@ class TransactionRecord(db.Model):
     expiryDate = db.Column(db.Date,nullable=False)
     securityCode = db.Column(db.String(20),nullable=False)
     amount = db.Column(db.Float, nullable=False)
+    paymentGateway=db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
         ccn = str(self.CardHolder + "'s Transaction")
@@ -38,7 +39,7 @@ payment_fields = {
     'expiryDate': fields.String,
     'securityCode': fields.String,
     'amount':fields.Float,
-    'createdAt': fields.String
+    'paymentGateway':fields.Float
 }
 
 
@@ -50,6 +51,7 @@ paymentFields.add_argument("CardHolder", type=str, help= "CardHolder is required
 paymentFields.add_argument("ExpirationDate", type=str, help= "ExpirationDate is required", required=True)
 paymentFields.add_argument("SecurityCode", type=str, help= "SecurityCode is required")
 paymentFields.add_argument("Amount", type=float, help= "Amount is required", required=True)
+
 
 
 class PaymentMethod(Resource):
@@ -76,11 +78,22 @@ class PaymentMethod(Resource):
         if args['Amount'] < 0:
             abort(400, message="Amount cannot be negative number")
 
+        #Select Payment gateway
+        if args['Amount'] < 20:
+            paymentgateway="CheapPaymentGateway"
+
+        if args['Amount'] >= 20 and <= 500:
+            paymentgateway="ExpensivePaymentGateway"
+
+        if args['Amount'] > 500:
+            paymentgateway="PremiumPaymentGateway"
+
 
         # create transaction record
         createdTransactionRecord = TransactionRecord(creditCardNumber=args['CreditCardNumber'], 
                                                     cardHolder=args['CardHolder'], expiryDate=exdate,
-                                                    securityCode=args['SecurityCode'], amount=args['Amount'])
+                                                    securityCode=args['SecurityCode'], amount=args['Amount'],
+                                                    paymentGateway=paymentgateway)
         db.session.add(createdTransactionRecord)
         db.session.commit()
         return createdTransactionRecord, 200
