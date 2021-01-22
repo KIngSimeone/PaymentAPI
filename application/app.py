@@ -28,11 +28,11 @@ class TransactionRecord(db.Model):
     paymentGateway=db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
-        ccn = str(self.CardHolder + "'s Transaction")
-        return ccn
+        ccd = str(self.CardHolder + "'s Transaction")
+        return ccd
 
 
-# create serialization for fields
+# create serialization for payment fields
 payment_fields = {
     'id': fields.Integer,
     'creditCardNumber': fields.String,
