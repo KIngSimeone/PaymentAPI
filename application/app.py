@@ -31,6 +31,7 @@ class TransactionRecord(db.Model):
         ccn = str(self.CardHolder + "'s Transaction")
         return ccn
 
+
 # create serialization for fields
 payment_fields = {
     'id': fields.Integer,
@@ -99,6 +100,8 @@ class PaymentMethod(Resource):
         return createdTransactionRecord, 200
 
 api.add_resource(PaymentMethod,"/payment")
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5000)
