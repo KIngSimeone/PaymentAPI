@@ -1,5 +1,6 @@
-from flask import Flask, jsonify
+from flask import Flask, request
 from flask_restful import Api, Resource
+import json
 
 app = Flask(__name__)
 api = Api(app)
@@ -12,7 +13,8 @@ api.add_resource(HelloWorld, "/hello/<string:name>")
 
 class PaymentMethod(Resource):
     def post(self):
-        return {"data":"Test"}
+        body = json.loads(request.body)
+        return {"data":body}
 
 api.add_resource(PaymentMethod,"/payment")
 
