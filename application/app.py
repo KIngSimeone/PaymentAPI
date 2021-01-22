@@ -72,6 +72,11 @@ class PaymentMethod(Resource):
         if len(args['SecurityCode']) > 3:
             abort(400, message="Your security code contains more than 3 characters")
         
+        # check if amount is negative
+        if args['Amount'] < 0:
+            abort(400, message="Amount cannot be negative number")
+
+
         # create transaction record
         createdTransactionRecord = TransactionRecord(creditCardNumber=args['CreditCardNumber'], 
                                                     cardHolder=args['CardHolder'], expiryDate=exdate,
