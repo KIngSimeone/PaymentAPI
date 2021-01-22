@@ -61,7 +61,9 @@ class PaymentMethod(Resource):
     def post(self):
         args = paymentFields.parse_args()
 
+        # covert inputed string to date format
         date_time_obj = datetime.datetime.strptime(args['ExpirationDate'], '%Y-%m-%d')
+        
         # create transaction record
         createdTransactionRecord = TransactionRecord(creditCardNumber=args['CreditCardNumber'], 
                                                     cardHolder=args['CardHolder'], expiryDate=date_time_obj,
