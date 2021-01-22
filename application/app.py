@@ -13,16 +13,16 @@ api.add_resource(HelloWorld, "/hello/<string:name>")
 
 #   check if required fields in request body of Payment method
 paymentFields = reqparse.RequestParser()
-paymentFields.add_argument("CreditCardNumber", type=str, help= "CreditCardNumber")
-paymentFields.add_argument("CardHolder", type=str, help= "CardHolder")
-paymentFields.add_argument("ExpirationDate", type=str, help= "ExpirationDate")
-paymentFields.add_argument("SecurityCode", type=str, help= "SecurityCode")
-paymentFields.add_argument("CardHolder", type=str, help= "CardHolder")
-paymentFields.add_argument("Amount", type=float, help= "Amount")
+paymentFields.add_argument("CreditCardNumber", type=str, help= "CreditCardNumber", required=True)
+paymentFields.add_argument("CardHolder", type=str, help= "CardHolder", required=True)
+paymentFields.add_argument("ExpirationDate", type=str, help= "ExpirationDate", required=True)
+paymentFields.add_argument("SecurityCode", type=str, help= "SecurityCode", required=True)
+paymentFields.add_argument("CardHolder", type=str, help= "CardHolder", required=True)
+paymentFields.add_argument("Amount", type=float, help= "Amount", required=True)
 
 class PaymentMethod(Resource):
-    def get(self):
-        args = paymentFields.parse_args()
+    def post(self):
+        args = paymentFields.parse_args() 
         return {"data":args}
 
 api.add_resource(PaymentMethod,"/payment")
