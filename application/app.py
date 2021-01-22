@@ -10,5 +10,11 @@ class HelloWorld(Resource):
 
 api.add_resource(HelloWorld, "/hello/<string:name>")
 
+class PaymentMethod(Resource):
+    def post(self):
+        return {"data":"Test"}
+
+api.add_resource(PaymentMethod,"/payment")
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5000)
