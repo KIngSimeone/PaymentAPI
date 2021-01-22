@@ -39,7 +39,7 @@ payment_fields = {
     'expiryDate': fields.String,
     'securityCode': fields.String,
     'amount':fields.Float,
-    'paymentGateway':fields.Float
+    'paymentGateway':fields.String
 }
 
 
@@ -82,7 +82,7 @@ class PaymentMethod(Resource):
         if args['Amount'] < 20:
             paymentgateway="CheapPaymentGateway"
 
-        if args['Amount'] >= 20 and <= 500:
+        if args['Amount'] >= 20 and args['Amount'] <= 500:
             paymentgateway="ExpensivePaymentGateway"
 
         if args['Amount'] > 500:
