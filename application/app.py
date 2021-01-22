@@ -1,28 +1,51 @@
 from flask import Flask, request
 from flask_restful import Api, Resource, reqparse
+from flask_sqlalchemy import SQLAlchemy
 import json
 
+
+# Initialize flask app
 app = Flask(__name__)
+
+# Link to database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+
+# Set app as API
 api = Api(app)
 
-class HelloWorld(Resource):
-    def get(self, name):
-        return {"data": name}
+# Set db as app datatbase
+db = SQLAlchemy(app)
 
-api.add_resource(HelloWorld, "/hello/<string:name>")
+# Transaction record model
+class TransactionRecord(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    creditCardNumber =  db.Column(db.String(100), unique = True, nullable=False)
+    cardHolder =  db.Column(db.String(564),nullable=False)
+    expiryDate = db.Column(db.Date,nullable=False)
+    securityCode = db.Column(db.String(20),nullable=False)
+    amount = db.Column(db.Integer, nullable=False)
+    createdAt = db.Column(db.Date,nullable=False)
+
+    def __repr__(self):
+        ccn = str(self.CardHolder + "'s Transaction")
+        return ccn
+
+
+
+
 
 #   check if required fields in request body of Payment method
 paymentFields = reqparse.RequestParser()
 paymentFields.add_argument("CreditCardNumber", type=str, help= "CreditCardNumber", required=True)
-paymentFields.add_argument("CardHolder", type=str, help= "CardHolder", required=True)
-paymentFields.add_argument("ExpirationDate", type=str, help= "ExpirationDate", required=True)
-paymentFields.add_argument("SecurityCode", type=str, help= "SecurityCode", required=True)
-paymentFields.add_argument("CardHolder", type=str, help= "CardHolder", required=True)
-paymentFields.add_argument("Amount", type=float, help= "Amount", required=True)
+paymentFields.add_argument("CardHolder", type=str, help= "CardHolder is required", required=True)
+paymentFields.add_argument("ExpirationDate", type=str, help= "ExpirationDate is required", required=True)
+paymentFields.add_argument("SecurityCode", type=str, help= "SecurityCode is required", required=True)
+paymentFields.add_argument("CardHolder", type=str, help= "CardHolder is required", required=True)
+paymentFields.add_argument("Amount", type=float, help= "Amount is required", required=True)
 
 class PaymentMethod(Resource):
     def post(self):
-        args = paymentFields.parse_args() 
+        args = paymentFields.parse_args()
         return {"data":args}
 
 api.add_resource(PaymentMethod,"/payment")
