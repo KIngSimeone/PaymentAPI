@@ -9,7 +9,6 @@ db = app.db
 migrate = app.migrate
 
 
-
 class Transaction(Model):
     id = db.Column(Integer, primary_key=True)
     creditCardNumber =  db.Column(String(150), unique = True, nullable=False)
