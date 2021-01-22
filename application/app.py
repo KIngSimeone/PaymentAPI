@@ -30,8 +30,6 @@ class TransactionRecord(db.Model):
         ccn = str(self.CardHolder + "'s Transaction")
         return ccn
 
-db.create_all()
-
 # create serialization for fields
 payment_fields = {
     'id': fields.Integer,
@@ -68,7 +66,11 @@ class PaymentMethod(Resource):
         # check if exdate is in the past by comparing with present date
         present = datetime.datetime.now()
         if exdate < present:
-            abort(400, message="Your Date is in the past")
+            abort(400, message="Your Date is in the past, please select dat in future")
+
+        # check if security code is more than 3 characters
+        if len(args['SecurityCode']) > 3:
+            abort(400, message="Your security code contains more than 3 characters")
         
         # create transaction record
         createdTransactionRecord = TransactionRecord(creditCardNumber=args['CreditCardNumber'], 
