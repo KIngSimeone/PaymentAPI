@@ -20,7 +20,7 @@ db = SQLAlchemy(app)
 # Transaction record model
 class TransactionRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    creditCardNumber =  db.Column(db.String(100), unique = True, nullable=False)
+    creditCardNumber =  db.Column(db.String(100),nullable=False)
     cardHolder =  db.Column(db.String(564),nullable=False)
     expiryDate = db.Column(db.Date,nullable=False)
     securityCode = db.Column(db.String(20),nullable=False)
@@ -62,7 +62,12 @@ class PaymentMethod(Resource):
         args = paymentFields.parse_args()
 
         # covert inputed string to date format
-        date_time_obj = datetime.datetime.strptime(args['ExpirationDate'], '%Y-%m-%d')
+        exdate = datetime.datetime.strptime(args['ExpirationDate'], '%Y-%m-%d')
+
+        # check if exdate is in the past by comparing with present date
+        present = datetime.now
+        if exdate < present:
+            abort(400, message="Your Date is in the past")
         
         # create transaction record
         createdTransactionRecord = TransactionRecord(creditCardNumber=args['CreditCardNumber'], 
