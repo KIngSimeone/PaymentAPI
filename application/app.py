@@ -12,7 +12,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 # Set app as API
 api = Api(app)
 
-# Set db as app datatbase
+# Set db as app datatbases
 db = SQLAlchemy(app)
 
 
