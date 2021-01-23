@@ -3,7 +3,6 @@ from flask_restful import Api, Resource, reqparse, fields, marshal_with, abort
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 
-
 # Initialize flask app
 app = Flask(__name__)
 
